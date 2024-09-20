@@ -9,21 +9,24 @@ public class MainMenu {
         Scanner call_scanner = new Scanner(System.in);
         RoleSelection role = new RoleSelection();
 
-        String[] T_info = {"", ""};
-
-        String userRole = role.select_role(call_scanner);
-
-        if (userRole.equals("T"))
+        while (true)
         {
-            role.RoleAsTeacher(call_scanner);
-        }
-        else if (userRole.equals("S"))
-        {
+            String userRole = role.select_role(call_scanner);
 
-        }
-        else
-        {
-
+            switch (userRole) {
+                case "T" ->
+                {
+                    System.out.println("Log in as teacher");
+                    role.RoleAsTeacher(call_scanner);
+                }
+                case "S" -> System.out.println("Log in as Student");
+                case "E" ->
+                {
+                    System.out.println("Exit");
+                    System.exit(0);
+                }
+                default -> System.out.println("Invalid Keyword");
+            }
         }
     }
 }
