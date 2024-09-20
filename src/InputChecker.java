@@ -23,7 +23,7 @@ public class InputChecker
     }
 
 
-    public String InputID(String inputInstruction, Scanner userInput)
+    public String InputID(String inputInstruction, int limit_digit,Scanner userInput)
     {
         String intTemStore;
         while (true)
@@ -31,7 +31,7 @@ public class InputChecker
             System.out.print(inputInstruction);
             intTemStore = userInput.nextLine();
 
-            if(isNumber(intTemStore) && intTemStore.length() == 8)
+            if(isNumber(intTemStore) && intTemStore.length() == limit_digit)
             {
                 return intTemStore;
             }

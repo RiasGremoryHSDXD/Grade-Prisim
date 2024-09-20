@@ -11,14 +11,10 @@ public class MainMenu {
 
         while (true)
         {
-            String userRole = role.select_role(call_scanner);
+            String userRole = role.setRole_select(call_scanner);
 
             switch (userRole) {
-                case "T" ->
-                {
-                    System.out.println("Log in as teacher");
-                    role.RoleAsTeacher(call_scanner);
-                }
+                case "T" -> role.userIsTeacher(call_scanner);
                 case "S" -> System.out.println("Log in as Student");
                 case "E" ->
                 {

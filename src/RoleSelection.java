@@ -1,15 +1,18 @@
 package src;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.*;
 
-public class RoleSelection {
+class RoleSelection
+{
+    private String role_select;
 
-    String select_role(Scanner userInput)
+    RoleSelection()
     {
-        String role_sel;
+        this.role_select = "";
+    }
 
+    String setRole_select(Scanner userInput)
+    {
         System.out.println("Student Grade Prisim\n\n");
 
         System.out.println("+--------------------+----------+");
@@ -19,75 +22,84 @@ public class RoleSelection {
         System.out.println("+--------------------+----------+");
 
         System.out.print("Log in as: ");
-        role_sel = userInput.nextLine().trim().toUpperCase();
 
-        switch (role_sel)
+        this.role_select = userInput.nextLine().toUpperCase().trim();
+
+        switch (this.role_select)
         {
-            case "T", "S", "E" -> {
-                return role_sel;
+            case "T", "S", "E" ->
+            {
+                return this.role_select;
             }
             default ->
             {
-                return "0";
+                return " ";
             }
         }
     }
 
-    void RoleAsTeacher(Scanner userInput)
+
+    void userIsTeacher(Scanner userInput)
     {
+        boolean loop_control;
+        do {
+            loop_control = true;
+
+            System.out.println("+--------------------+----------+");
+            System.out.println("|  CREATE ACCOUNT    |     C    |");
+            System.out.println("|  HAVE AN ACCOUNT   |     H    |");
+            System.out.println("|  BACK              |     B    |");
+            System.out.println("+--------------------+----------+");
+
+            System.out.print("Selected option: ");
+            String selected_option = userInput.nextLine().toUpperCase().trim();
+
+            switch (selected_option)
+            {
+                case "C" -> TeacherCreateAccount(userInput);
+                case "H" -> TeacherLoginAccount(userInput);
+                case "B" -> loop_control = false;
+                default ->
+                {
+                    System.out.println("Invalid Keyword! Try Again.");
+                    loop_control = true;
+                }
+            }
+        }while (loop_control);
+    }
+
+    void TeacherCreateAccount(Scanner userInput)
+    {
+        InputChecker inputChecker = new InputChecker();
         DataVerifier dataVerifier = new DataVerifier();
-        String user_choose;
-        boolean loop_con = true;
-        do
+
+        String T_first_name, T_middle_name, T_last_name, T_ID, T_complete_name;
+
+        T_first_name =  inputChecker.InputString("First name: ", userInput);
+        T_middle_name = inputChecker.InputString("Middle name: ", userInput);
+        T_last_name = inputChecker.InputString("Last name: ", userInput);
+        T_ID = inputChecker.InputID("Identification: ", 8, userInput);
+        T_complete_name = inputChecker.toTitleCase(T_last_name + ", " + T_first_name + " " + T_middle_name);
+
+        dataVerifier.addTeacherAcc(T_complete_name, T_ID);
+    }
+
+    void TeacherLoginAccount(Scanner userInput)
+    {
+        String T_email, T_password;
+
+        System.out.print("Email: ");
+        T_email = userInput.nextLine();
+        System.out.print("Password: ");
+        T_password = userInput.nextLine();
+
+        if (T_email.equals(T_password))
         {
-            System.out.print("Already have a teacher account (Y/N): ");
-            user_choose = userInput.nextLine().toUpperCase().trim();
-
-            if (user_choose.equals("Y"))
-            {
-                System.out.println("The teacher have a account already");
-                String[] data = LogInAsTeacher(userInput);
-                dataVerifier.checkTeacherAcc(data[0], data[1]);
-            }
-            else if (user_choose.equals("N"))
-            {
-                System.out.println("The teacher don't have account");
-                String[] data = setupTeacherAcc(userInput);
-                dataVerifier.addTeacherAcc(data[0], data[1]);
-                break;
-            }
-            else
-            {
-                System.out.println("Invalid Keyword");
-            }
-        }while (loop_con);
-    }
-
-    String[] setupTeacherAcc(Scanner userInput)
-    {
-        InputChecker input_check = new InputChecker();
-
-        String T_first_name = input_check.InputString("First name: ", userInput);
-        String T_middle_name = input_check.InputString("Middle name: ", userInput);
-        String T_last_name = input_check.InputString("Last name: ", userInput);
-        String T_ID = input_check.InputID("Identification: ", userInput);
-
-        String complete_name = T_last_name + ", " + T_first_name + " " + T_middle_name;
-        String T_titleCase_complete_name = input_check.toTitleCase(complete_name);
-        return new String[]{T_titleCase_complete_name, T_ID};
-    }
-
-    String[] LogInAsTeacher(Scanner userInput)
-    {
-        System.out.println("Email: ");
-        String T_email = userInput.nextLine();
-        System.out.println("Password: ");
-        String T_password = userInput.nextLine();
-        return new String[]{T_email, T_password};
-    }
-
-    void RoleAsStudent()
-    {
-
+            System.out.println("Correct Authentication");
+        }
+        else
+        {
+            System.out.println("Invalid Authentication");
+        }
     }
 }
